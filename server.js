@@ -24,14 +24,20 @@ var transRoute = require('./routers/trans.router');
 var authRoute = require('./routers/auth.router');
 var cartRoute = require('./routers/cart.router');
 
+var apiBookRoute = require ('./api/routers/book.router.js');
+var loginRoute = require('./api/routers/auth.router.js');
+//var apiPutRoute = require('./api/routers/product.router.js');
+
 app.use(bodyParser.json()) // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(cookieParser(process.env.SENDGRID_API_KEY));
 app.use(cookie.count);
 app.use(sessions);
 
+
 app.set('view engine', 'pug');
 app.set("views", "./views");
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
@@ -43,6 +49,9 @@ app.get('/', (req, res) => {
   res.render('home');
 });
 
+//app.use('/api/put', apiPutRoute);
+app.use('/api/books', apiBookRoute);
+app.use('/api', loginRoute);
 
 app.use('/books', bookRoute);
 app.use("/user",authMiddleware.requireAuth, userRoute);
